@@ -16,16 +16,19 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager
 TOOL = TOOL.lower()  # Ensure TOOL is in lowercase for consistency
 BROWSER = BROWSER.lower()  # Ensure BROWSER is in lowercase for consistency
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def setup_browser():
     if TOOL == "playwright":
         with sync_playwright() as p:
+            
             if BROWSER == "chrome":
-                browser = p.chromium.launch(headless=False)
+                browser = p.chromium.launch(headless=False, slow_mo=200)
             elif BROWSER == "firefox":
-                browser = p.firefox.launch(headless=False)
+                browser = p.firefox.launch(headless=False, slow_mo=200)
+            elif BROWSER == "safari":
+                browser = p.webkit.launch(headless=False, slow_mo=200)  # Safari is supported via WebKit    
             elif BROWSER == "edge":
-                browser = p.chromium.launch(channel="msedge", headless=False)
+                browser = p.chromium.launch(channel="msedge", headless=False, slow_mo=200)
             else:
                 raise ValueError(f"Unsupported browser: {BROWSER}")
             page = browser.new_page()
@@ -38,6 +41,8 @@ def setup_browser():
             driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
         elif BROWSER == "edge":
             driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+        elif BROWSER == "safari":
+            driver = webdriver.Safari()  # Safari WebDriver must be enabled in macOS    
         else:
             raise ValueError(f"Unsupported browser: {BROWSER}")
         yield driver

@@ -9,5 +9,5 @@ class BasePage:
         self.browser.navigate(url)
 
     def wait_for_element(self, selector):
-        # This method can be implemented using BrowserAdapter if needed
-        pass
+        """Wait for an element to be present in the DOM."""
+        self.browser.page.wait_for_selector(selector)

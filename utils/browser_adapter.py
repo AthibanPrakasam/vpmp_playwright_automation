@@ -41,6 +41,7 @@ class BrowserAdapter:
             return self.page.title()
         else:
             raise ValueError(f"Unsupported tool: {self.tool}")
+        
     def get_element_text(self, selector):
         if self.tool == "selenium":
             WebDriverWait(self.page, 10).until(EC.presence_of_element_located((By.XPATH, selector)))
