@@ -19,11 +19,11 @@ def setup_browser():
           yield page
           browser.close()
     elif TOOL == "selenium":
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-        yield driver
-        driver.quit()
+          driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+          yield driver
+          driver.quit()
     else:
-        raise ValueError(f"Unsupported tool: {TOOL}")
+          raise ValueError(f"Unsupported tool: {TOOL}")
     # No setup needed for requests, as it doesn't require a browser context
     # Note: The yield statement allows the test to run with the browser context
     # and then closes the browser after the test completes.
