@@ -8,16 +8,18 @@ class Sequencepage(LoginPage):
         self.select_plant = "//div[contains(@class,'text-xl font-semibold')]"
         self.dashboardtxt = "//div[contains(text(),'Dashboard')]"
         self.sequence_management = "//div[contains(@class,'font-medium')][normalize-space()='Sequences']"
-        self.sequencetxt = "//div[contains(@class,'text-lg font-semibold')]"
+        self.sequencetxt = "//div[@class=' font-semibold']"
+
     def portallogin(self):
          login = LoginPage(self.page)
          login.load()
          login.login("admin", "admin@123")
 
     def gotoseqmanagement(self):
+        self.browser.wait_for_element(self.select_plant)
         self.browser.click(self.select_plant)
-        self.browser.get_element_text(self.select_plant)
-        assert "Dashboard" in self.browser.get_element_text(self.dashboardtxt), "Dashboard text not found"
+        self.browser.wait_for_element(self.dashboardtxt)
+        self.browser.wait_for_element(self.sequence_management) 
         self.browser.click(self.sequence_management)
         assert "Sequences" in self.browser.get_element_text(self.sequencetxt), "Sequences text not found"
 
